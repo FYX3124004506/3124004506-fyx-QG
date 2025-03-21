@@ -177,11 +177,11 @@ ListNode* reversListNOGUI(ListNode* head) {
 //反转链表（递归）(求助ai，还是不太理解递归的流程，模糊的精确)
 //类似于向函数中反复带入数字求下一项的值，直到等于某个值再递归回来
 ListNode* reversListGUI(ListNode* head) {
-	if (head == NULL || head->next != NULL)return head;//若递归到空，则返回
+	if (head == NULL || head->next == NULL)return head;//若递归到空，则返回
 	ListNode* newhead = reversListGUI(head->next);//不为空则前往下一项
 	//指针调整
-	head->next = head;
-	head->next = head;//将当前节点的后一个节点指向自己
+	ListNode* newNode = head->next;
+	newNode->next = head;//将当前节点的后一个节点指向自己
 	head->next = NULL;//确保原来的头节点变为尾节点指向NULL
 	return newhead;
 }
@@ -212,7 +212,7 @@ int main() {
 	int cycle = checkCycle(head);
 	printf("链表是否有环:%d\n", cycle);
 
-	ListNode* reversehead = reversListNOGUI(head);
+	ListNode* reversehead = reversListGUI(head);
 	printf("反转后的链表:\n");
 	checkList(reversehead);
 	return 0;
