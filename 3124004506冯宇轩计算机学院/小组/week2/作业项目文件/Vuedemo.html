@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- 设置视口，确保页面在不同设备上正常显示 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 页面标题 -->
+  <title>登录注册页面</title>
+
+
+  <style>
+    /* 对 body 元素进行样式设置，使用 Flex 布局让内容在页面中垂直和水平居中 */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f2f5;
+    }
+
+
+    /* 表单容器的样式，设置背景颜色、内边距、圆角和阴影，并且规定宽度 */
+    .form-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+
+    /* 切换按钮容器的样式，使用 Flex 布局让按钮水平分布，并设置底部外边距 */
+    .toggle-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+
+    /* 切换按钮的基础样式，设置内边距、边框、背景颜色和鼠标指针样式 */
+    .toggle-buttons button {
+      padding: 10px 20px;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+
+    /* 激活状态下切换按钮的样式，添加底部边框和文字颜色 */
+    .toggle-buttons button.active {
+      border-bottom: 2px solid #1890ff;
+      color: #1890ff;
+    }
+
+
+    /* 输入框的样式，设置宽度、内边距、底部外边距、边框和圆角 */
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+    }
+
+
+    /* 提交按钮的样式，设置宽度、内边距、背景颜色、文字颜色、边框和圆角 */
+    button[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #1890ff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+
+    /* 提交按钮悬停时的样式，改变背景颜色 */
+    button[type="submit"]:hover {
+      background-color: #40a9ff;
+    }
+
+
+  </style>
+</head>
+
+
+<body>
+<!-- Vue 实例挂载的 DOM 节点 -->
+<div id="app">
+  <!-- 表单容器 -->
+  <div class="form-container">
+    <!-- 切换按钮容器 -->
+    <div class="toggle-buttons">
+      <!-- 登录按钮，使用 :class 动态绑定 'active' 类，@click 监听点击事件来切换到登录状态 -->
+      <button :class="{ 'active': isLogin }" @click="isLogin = true">登录</button>
+      <!-- 注册按钮，使用 :class 动态绑定 'active' 类，@click 监听点击事件来切换到注册状态 -->
+      <button :class="{ 'active':!isLogin }" @click="isLogin = false">注册</button>
+    </div>
+    <!-- 登录表单，使用 v-if 条件渲染，当 isLogin 为 true 时显示 -->
+    <form v-if="isLogin" @submit.prevent="handleLogin">
+      <!-- 用户名输入框，使用 v-model 实现双向数据绑定 -->
+      <input v-model="loginUsername" type="text" placeholder="用户名">
+      <!-- 密码输入框，使用 v-model 实现双向数据绑定 -->
+      <input v-model="loginPassword" type="password" placeholder="密码">
+      <!-- 登录提交按钮 -->
+      <button type="submit">登录</button>
+    </form>
+    <!-- 注册表单，使用 v-if 条件渲染，当 isLogin 为 false 时显示 -->
+    <form v-else @submit.prevent="handleRegister">
+      <!-- 用户名输入框，使用 v-model 实现双向数据绑定 -->
+      <input v-model="registerUsername" type="text" placeholder="用户名">
+      <!-- 密码输入框，使用 v-model 实现双向数据绑定 -->
+      <input v-model="registerPassword" type="password" placeholder="密码">
+      <!-- 确认密码输入框，使用 v-model 实现双向数据绑定 -->
+      <input v-model="confirmPassword" type="password" placeholder="确认密码">
+      <!-- 注册提交按钮 -->
+      <button type="submit">注册</button>
+    </form>
+  </div>
+</div>
+
+
+<!-- 引入 Vue.js 库 -->
+<script src="js/vue.js"></script>
+<script>
+  // 创建 Vue 实例并挂载到 #app 节点
+  new Vue({
+    el: '#app',
+    // 定义数据属性
+    data: {
+      // 用于判断当前显示的是登录还是注册表单，true 表示登录，false 表示注册
+      isLogin: true,
+      // 登录时的用户名
+      loginUsername: '',
+      // 登录时的密码
+      loginPassword: '',
+      // 注册时的用户名
+      registerUsername: '',
+      // 注册时的密码
+      registerPassword: '',
+      // 注册时确认密码
+      confirmPassword: ''
+    },
+
+
+    // 定义方法
+    methods: {
+      // 处理登录表单提交的方法
+      handleLogin() {
+
+        // 检查用户名和密码是否为空
+        if (!this.loginUsername ||!this.loginPassword) {
+          // 若为空，弹出提示框
+          alert('请输入用户名和密码');
+          return;
+        }
+        // 若不为空，在控制台输出登录成功信息
+        console.log('登录成功，用户名：', this.loginUsername, '密码：', this.loginPassword);
+      },
+
+      // 处理注册表单提交的方法
+      handleRegister() {
+
+        // 检查注册所需字段是否为空
+        if (!this.registerUsername ||!this.registerPassword ||!this.confirmPassword) {
+          // 若为空，弹出提示框
+          alert('请填写所有字段');
+          return;
+        }
+
+        // 检查两次输入的密码是否一致
+        if (this.registerPassword!== this.confirmPassword) {
+          // 若不一致，弹出提示框
+          alert('两次输入的密码不一致');
+          return;
+        }
+
+        // 若所有条件都满足，在控制台输出注册成功信息
+        console.log('注册成功，用户名：', this.registerUsername, '密码：', this.registerPassword);
+      }
+    }
+  });
+</script>
+</body>
+</html>
